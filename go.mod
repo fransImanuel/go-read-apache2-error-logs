@@ -1,6 +1,6 @@
 module go-read-apache2-error-logs
 
-go 1.22.0
+go 1.20
 
 require (
 	github.com/hpcloud/tail v1.0.0 // indirect
