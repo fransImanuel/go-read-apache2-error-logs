@@ -43,7 +43,7 @@ func main() {
 		fmt.Println(line.Text)
 		// selain 200 dan 404
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
-			if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
+			if strings.Contains(line.Text, " 500 ") || strings.Contains(line.Text, " 501 ") || strings.Contains(line.Text, " 502 ") || strings.Contains(line.Text, " 503 ") || strings.Contains(line.Text, " 504 ") || strings.Contains(line.Text, " 505 ") || strings.Contains(line.Text, " 506 ") || strings.Contains(line.Text, " 507 ") || strings.Contains(line.Text, " 508 ") || strings.Contains(line.Text, " 509 ") || strings.Contains(line.Text, " 510 ") || strings.Contains(line.Text, " 511 ") {
 				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
 					fmt.Println("=============================ERROR==================================")
 					fmt.Println(err)
