@@ -2,9 +2,6 @@ package main
 
 import (
 	"fmt"
-	"go-read-apache2-error-logs/util/env"
-	"go-read-apache2-error-logs/util/mail"
-	"strings"
 
 	"github.com/nxadm/tail"
 )
@@ -25,11 +22,11 @@ chmod +x crm-ticket-scheduler
 ./watch_logs > program_log.txt 2>&1 &
 */
 func main() {
-	fmt.Println("Starting---")
+	fmt.Println("---Starting---")
 
-	smtpConfig := env.GetSMTPConfig()
-	smtpClient := mail.InitEmail(smtpConfig)
-	Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
+	// smtpConfig := env.GetSMTPConfig()
+	// smtpClient := mail.InitEmail(smtpConfig)
+	// Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
 
 	// panic(1)
 	fileLocation := "/var/log/apache2/access.log"
@@ -42,18 +39,18 @@ func main() {
 	for line := range t.Lines {
 		fmt.Println(line.Text)
 		// selain 200 dan 404
-		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
-			if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
-				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
-					fmt.Println("=============================ERROR==================================")
-					fmt.Println(err)
-					fmt.Println("=============================ERROR==================================")
-				}
-			}
-		}
+		// if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
+		// 	if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
+		// 		if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
+		// 			fmt.Println("=============================ERROR==================================")
+		// 			fmt.Println(err)
+		// 			fmt.Println("=============================ERROR==================================")
+		// 		}
+		// 	}
+		// }
 
 	}
-	fmt.Println("Finished---")
+	fmt.Println("---Finished---")
 }
 
 // if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {

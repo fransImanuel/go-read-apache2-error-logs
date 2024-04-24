@@ -70,7 +70,7 @@ func GetSMTPConfig() *dto.SMTPConfig {
 		Name:     smtpName,
 	}
 
-	fmt.Printf("%+v", config)
+	// fmt.Printf("%+v", config)
 	// panic(1)
 	return config
 }
