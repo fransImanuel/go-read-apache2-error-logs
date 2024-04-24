@@ -25,6 +25,8 @@ chmod +x crm-ticket-scheduler
 ./watch_logs > program_log.txt 2>&1 &
 */
 func main() {
+	// logs := `103.106.82.174 - - [24/Apr/2024:11:05:41 +0700] "GET /nobucall-api-v2/v3/tickets/servicefamilies HTTP/1.1" 200 510 "http://innodev.vnetcloud.com/nobucall-web-v2/admin/ticket/create" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"`
+	// fmt.Println(extractHTTPStatusCode(logs))
 	fmt.Println("---Starting---")
 
 	smtpConfig := env.GetSMTPConfig()
@@ -43,7 +45,8 @@ func main() {
 		fmt.Println(line.Text)
 		// selain 200 dan 404
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
-			if strings.Contains(line.Text, " 500 ") || strings.Contains(line.Text, " 501 ") || strings.Contains(line.Text, " 502 ") || strings.Contains(line.Text, " 503 ") || strings.Contains(line.Text, " 504 ") || strings.Contains(line.Text, " 505 ") || strings.Contains(line.Text, " 506 ") || strings.Contains(line.Text, " 507 ") || strings.Contains(line.Text, " 508 ") || strings.Contains(line.Text, " 509 ") || strings.Contains(line.Text, " 510 ") || strings.Contains(line.Text, " 511 ") {
+
+			if extractHTTPStatusCode(line.Text) == "400" || extractHTTPStatusCode(line.Text) == "500" || extractHTTPStatusCode(line.Text) == "503" {
 				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
 					fmt.Println("=============================ERROR==================================")
 					fmt.Println(err)
@@ -56,6 +59,14 @@ func main() {
 	fmt.Println("---Finished---")
 }
 
-// if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
-// 	panic(err)
-// }
+// 400, 500, 503
+//
+//	if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
+//		panic(err)
+//	}
+func extractHTTPStatusCode(logEntry string) string {
+	// Split the log entry by space
+	parts := strings.Split(logEntry, " ")
+	// The HTTP status code is the 9th element in the split parts
+	return parts[8]
+}
