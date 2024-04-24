@@ -52,7 +52,7 @@ func main() {
 			}
 		}
 
-		// fmt.Println(line.Text)
+		fmt.Println(line.Text)
 	}
 	fmt.Println("Finished---")
 }
