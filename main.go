@@ -29,6 +29,7 @@ func main() {
 
 	smtpConfig := env.GetSMTPConfig()
 	smtpClient := mail.InitEmail(smtpConfig)
+	Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
 
 	// panic(1)
 	fileLocation := "/var/log/apache2/access.log"
@@ -37,8 +38,6 @@ func main() {
 		fmt.Println(err)
 		panic(1)
 	}
-
-	Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
 
 	// if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
 	// 	panic(err)
