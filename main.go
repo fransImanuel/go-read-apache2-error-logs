@@ -39,19 +39,23 @@ func main() {
 		panic(1)
 	}
 
-	// if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
-	// 	panic(err)
-	// }
-
 	for line := range t.Lines {
+		fmt.Println(line.Text)
 		// selain 200 dan 404
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
 			if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
-				smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil)
+				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
+					fmt.Println("=============================ERROR==================================")
+					fmt.Println(err)
+					fmt.Println("=============================ERROR==================================")
+				}
 			}
 		}
 
-		fmt.Println(line.Text)
 	}
 	fmt.Println("Finished---")
 }
+
+// if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
+// 	panic(err)
+// }
