@@ -38,19 +38,21 @@ func main() {
 		panic(1)
 	}
 
-	Email := []string{"frans.imanuel@visionet.co.id", "fransimanuel99@gmail.com"}
+	Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
 
 	// if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
 	// 	panic(err)
 	// }
 
 	for line := range t.Lines {
-		// 200 dan 404
-		if strings.Contains(line.Text, " 503 ") {
-			smtpClient.Send(Email, nil, nil, "heading", "text/html", line.Text, nil)
+		// selain 200 dan 404
+		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
+			if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
+				smtpClient.Send(Email, nil, nil, "heading", "text/html", line.Text, nil)
+			}
 		}
-		fmt.Println(line.Text)
 
+		// fmt.Println(line.Text)
 	}
 	fmt.Println("Finished---")
 }
