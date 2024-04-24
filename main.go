@@ -29,8 +29,8 @@ func main() {
 	// Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
 
 	// panic(1)
-	fileLocation := "/var/log/apache2/access.log"
-	t, err := tail.TailFile(fileLocation, tail.Config{Follow: true, ReOpen: true})
+	// fileLocation :=
+	t, err := tail.TailFile("/var/log/apache2/access.log", tail.Config{Follow: true, ReOpen: true})
 	if err != nil {
 		fmt.Println(err)
 		panic(err)
