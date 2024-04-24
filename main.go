@@ -48,7 +48,7 @@ func main() {
 		// selain 200 dan 404
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
 			if !strings.Contains(line.Text, " 200 ") && !strings.Contains(line.Text, " 404 ") {
-				smtpClient.Send(Email, nil, nil, "heading", "text/html", line.Text, nil)
+				smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil)
 			}
 		}
 
