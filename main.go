@@ -36,7 +36,7 @@ func main() {
 	t, err := tail.TailFile(fileLocation, tail.Config{Follow: true, ReOpen: true})
 	if err != nil {
 		fmt.Println(err)
-		panic(1)
+		panic(err)
 	}
 
 	for line := range t.Lines {
