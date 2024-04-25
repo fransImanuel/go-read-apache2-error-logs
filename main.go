@@ -46,7 +46,7 @@ func main() {
 	for line := range t.Lines {
 		fmt.Println(line.Text)
 		// selain 200 dan 404
-		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
+		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") || strings.Contains(line.Text, "crm-ticket-copy-1") {
 
 			if extractHTTPStatusCode(line.Text) == "400" || extractHTTPStatusCode(line.Text) == "500" || extractHTTPStatusCode(line.Text) == "503" {
 				// fmt.Println("***************************GOTTEM***************************")
