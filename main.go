@@ -49,7 +49,8 @@ func main() {
 	}
 	for line := range t.Lines {
 		fmt.Println(line.Text)
-		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") || strings.Contains(line.Text, "crm-ticket-copy-1") {
+		if strings.Contains(line.Text, "news") || strings.Contains(line.Text, "1_6_5_prd_mf_") || strings.Contains(line.Text, "1_6_6_prd_mf_web") {
+			// if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") || strings.Contains(line.Text, "crm-ticket-copy-1") {
 			if util.ExtractHTTPStatusCode(line.Text) == "400" || util.ExtractHTTPStatusCode(line.Text) == "500" || util.ExtractHTTPStatusCode(line.Text) == "503" {
 				fmt.Println(line.Text)
 
