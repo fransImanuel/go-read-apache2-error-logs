@@ -82,10 +82,12 @@ func LogsFileMaintainer() {
 		filePath = append(filePath, fname)
 	}
 
-	if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", "Apache Logs with txt", filePath); err != nil {
-		fmt.Println("***************************ERROR SEND EMAIL***************************")
-		fmt.Println(err)
-		fmt.Println("***************************ERROR SEND EMAIL***************************")
+	if CheckFileLength(fname) > 0 {
+		if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", "Apache Logs with txt", filePath); err != nil {
+			fmt.Println("***************************ERROR SEND EMAIL***************************")
+			fmt.Println(err)
+			fmt.Println("***************************ERROR SEND EMAIL***************************")
+		}
 	}
 
 	if err := os.Remove(fname); err != nil {
@@ -128,4 +130,14 @@ func TestEmailSendAttachment() {
 		fmt.Println("***************************ERROR SEND EMAIL***************************")
 	}
 
+}
+
+func CheckFileLength(filename string) int64 {
+	f, err := os.Open(filename)
+	fi, err := f.Stat()
+	if err != nil {
+		// Could not obtain stat, handle error
+		fmt.Println(err)
+	}
+	return fi.Size()
 }
