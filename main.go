@@ -24,9 +24,9 @@ chmod +x crm-ticket-scheduler
 ./watch_logs > program_log.txt 2>&1 &
 */
 func main() {
-	util.CheckFileLength("asd.txt")
-	util.CheckFileLength("fgh.txt")
-	panic(1)
+	// util.CheckFileLength("asd.txt")
+	// util.CheckFileLength("fgh.txt")
+	// panic(1)
 	// util.TestEmailSendAttachment()
 	// panic(1)
 	// logs := `103.106.82.174 - - [24/Apr/2024:17:36:40 +0700] "POST /crm-ticket-copy-1/api/v1/user/login HTTP/1.1" 503 1146 "https://innodev.vnetcloud.com/metacrm-internal/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0"
