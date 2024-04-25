@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	"go-read-apache2-error-logs/util/env"
-	"go-read-apache2-error-logs/util/mail"
+	"go-read-apache2-error-logs/util"
 	"strings"
 
 	"github.com/nxadm/tail"
@@ -25,38 +24,34 @@ chmod +x crm-ticket-scheduler
 ./watch_logs > program_log.txt 2>&1 &
 */
 func main() {
+	// util.TestEmailSendAttachment()
+	// panic(1)
 	// logs := `103.106.82.174 - - [24/Apr/2024:17:36:40 +0700] "POST /crm-ticket-copy-1/api/v1/user/login HTTP/1.1" 503 1146 "https://innodev.vnetcloud.com/metacrm-internal/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0"
 	// `
-	// fmt.Println("|" + extractHTTPStatusCode(logs) + "|")
+	// fmt.Println("|" + util.ExtractHTTPStatusCode(logs) + "|")
 	// panic(1)
 	fmt.Println("---Starting---")
 
-	smtpConfig := env.GetSMTPConfig()
-	smtpClient := mail.InitEmail(smtpConfig)
-	Email := []string{"frans.imanuel@visionet.co.id", "lishera.prihatni@visionet.co.id", "ari.darmawan@visionet.co.id", "azky.muhtarom@visionet.co.id" /*, "fransimanuel99@gmail.com" */}
+	//activate the scheduler
+	util.Scheduler()
 
-	// panic(1)
-	// fileLocation :=
+	//create first file
+	util.WriteFile()
+
 	t, err := tail.TailFile("/var/log/apache2/access.log", tail.Config{Follow: true, ReOpen: true})
 	if err != nil {
+		fmt.Println("***************************ERROR TAILING FILE LOG***************************")
 		fmt.Println(err)
-		panic(err)
+		fmt.Println("***************************ERROR TAILING FILE LOG***************************")
 	}
-
 	for line := range t.Lines {
 		fmt.Println(line.Text)
-		// selain 200 dan 404
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") || strings.Contains(line.Text, "crm-ticket-copy-1") {
-
-			if extractHTTPStatusCode(line.Text) == "400" || extractHTTPStatusCode(line.Text) == "500" || extractHTTPStatusCode(line.Text) == "503" {
-				// fmt.Println("***************************GOTTEM***************************")
+			if util.ExtractHTTPStatusCode(line.Text) == "400" || util.ExtractHTTPStatusCode(line.Text) == "500" || util.ExtractHTTPStatusCode(line.Text) == "503" {
 				fmt.Println(line.Text)
-				// fmt.Println("***************************GOTTEM***************************")
-				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
-					fmt.Println("***************************ERROR***************************")
-					fmt.Println(err)
-					fmt.Println("***************************ERROR***************************")
-				}
+
+				_, fname := util.FindFile()
+				util.WriteLog(fname, line.Text)
 			}
 		}
 
@@ -69,9 +64,3 @@ func main() {
 //	if err := smtpClient.Send(Email, nil, nil, "heading", "text/html", "test email123", nil); err != nil {
 //		panic(err)
 //	}
-func extractHTTPStatusCode(logEntry string) string {
-	// Split the log entry by space
-	parts := strings.Split(logEntry, " ")
-	// The HTTP status code is the 9th element in the split parts
-	return parts[8]
-}
