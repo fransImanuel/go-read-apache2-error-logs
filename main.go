@@ -25,8 +25,10 @@ chmod +x crm-ticket-scheduler
 ./watch_logs > program_log.txt 2>&1 &
 */
 func main() {
-	// logs := `103.106.82.174 - - [24/Apr/2024:11:05:41 +0700] "GET /nobucall-api-v2/v3/tickets/servicefamilies HTTP/1.1" 200 510 "http://innodev.vnetcloud.com/nobucall-web-v2/admin/ticket/create" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"`
-	// fmt.Println(extractHTTPStatusCode(logs))
+	// logs := `103.106.82.174 - - [24/Apr/2024:17:36:40 +0700] "POST /crm-ticket-copy-1/api/v1/user/login HTTP/1.1" 503 1146 "https://innodev.vnetcloud.com/metacrm-internal/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0"
+	// `
+	// fmt.Println("|" + extractHTTPStatusCode(logs) + "|")
+	// panic(1)
 	fmt.Println("---Starting---")
 
 	smtpConfig := env.GetSMTPConfig()
@@ -47,10 +49,13 @@ func main() {
 		if strings.Contains(line.Text, "nobucall-api-v2") || strings.Contains(line.Text, "nobucall-api-report") {
 
 			if extractHTTPStatusCode(line.Text) == "400" || extractHTTPStatusCode(line.Text) == "500" || extractHTTPStatusCode(line.Text) == "503" {
+				// fmt.Println("***************************GOTTEM***************************")
+				fmt.Println(line.Text)
+				// fmt.Println("***************************GOTTEM***************************")
 				if err := smtpClient.Send(Email, nil, nil, "Apache Logs", "text/html", line.Text, nil); err != nil {
-					fmt.Println("=============================ERROR==================================")
+					fmt.Println("***************************ERROR***************************")
 					fmt.Println(err)
-					fmt.Println("=============================ERROR==================================")
+					fmt.Println("***************************ERROR***************************")
 				}
 			}
 		}

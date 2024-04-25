@@ -54,6 +54,8 @@ func (e *SMTP) Send(to []string, cc []string, bcc []string, subject string, body
 		return err
 	}
 
+	fmt.Println("***************************EMAIL SENT***************************")
 	fmt.Println("Email - Send - finished")
+	fmt.Println("***************************EMAIL SENT***************************")
 	return nil
 }
